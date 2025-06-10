@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreHabitLogRequest;
 use App\Http\Resources\HabitLogResource;
 use App\Models\Habit;
 use App\Models\HabitLog;
@@ -22,15 +23,19 @@ class HabitLogController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreHabitLogRequest $request, Habit $habit)
     {
-        //
+        $log = $habit->logs()->updateOrCreate([
+            'completed_at' => $request->date('completed_at'),
+        ]);
+
+        return HabitLogResource::make($log);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(HabitLog $habitLog)
+    public function show(HabitLog $habitLog): void
     {
         //
     }
@@ -38,7 +43,7 @@ class HabitLogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, HabitLog $habitLog)
+    public function update(Request $request, HabitLog $habitLog): void
     {
         //
     }
@@ -46,7 +51,7 @@ class HabitLogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HabitLog $habitLog)
+    public function destroy(HabitLog $habitLog): void
     {
         //
     }
