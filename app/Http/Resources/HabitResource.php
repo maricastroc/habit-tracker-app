@@ -24,7 +24,7 @@ class HabitResource extends JsonResource
             'user'  => UserResource::make($this->whenLoaded('user')),
             'links' => [
                 'self' => route('api.habits.show', $this),
-                'logs' => route('api.habit_logs.index', $this),
+                'logs' => route('api.habits.logs.index', $this),
             ],
         ];
     }

@@ -16,11 +16,11 @@ class HabitController extends Controller
         return HabitResource::collection(
             Habit::query()
                 ->when(
-                    str(request()->string('with'))->contains('user'),
+                    request()->string('with')->contains('user'),
                     fn ($query) => $query->with('user')
                 )
                 ->when(
-                    str(request()->string('with'))->contains('logs'),
+                    request()->string('with')->contains('logs'),
                     fn ($query) => $query->with('logs')
                 )
                 ->paginate()
@@ -29,7 +29,13 @@ class HabitController extends Controller
 
     public function show(Habit $habit)
     {
-        return HabitResource::make($habit);
+        $allowedRelations = ['logs', 'user'];
+
+        $load = request()->string('with')->explode(',')
+            ->filter(fn ($relation): bool => in_array($relation, $allowedRelations))
+            ->toArray();
+
+        return HabitResource::make($habit->load($load));
     }
 
     public function store(StoreHabitRequest $request)

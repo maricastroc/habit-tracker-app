@@ -8,7 +8,6 @@ use App\Http\Requests\StoreHabitLogRequest;
 use App\Http\Resources\HabitLogResource;
 use App\Models\Habit;
 use App\Models\HabitLog;
-use Illuminate\Http\Request;
 
 class HabitLogController extends Controller
 {
@@ -17,7 +16,10 @@ class HabitLogController extends Controller
      */
     public function index(Habit $habit)
     {
-        return HabitLogResource::collection($habit->logs()->paginate());
+        return HabitLogResource::collection(
+            $habit->logs()
+                ->paginate()
+        );
     }
 
     /**
@@ -35,24 +37,18 @@ class HabitLogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(HabitLog $habitLog): void
+    public function show(Habit $habit, HabitLog $log)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, HabitLog $habitLog): void
-    {
-        //
+        return HabitLogResource::make($log);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HabitLog $habitLog): void
+    public function destroy(Habit $habit, HabitLog $log)
     {
-        //
+        $log->delete();
+
+        return response()->noContent();
     }
 }

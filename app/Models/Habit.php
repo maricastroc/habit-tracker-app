@@ -33,6 +33,6 @@ class Habit extends Model
 
     public function logs(): HasMany
     {
-        return $this->hasMany(HabitLog::class);
+        return $this->hasMany(HabitLog::class)->chaperone('habit');
     }
 }

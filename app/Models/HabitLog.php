@@ -15,7 +15,7 @@ class HabitLog extends Model
     use HasFactory;
     use HasUuid;
 
-    public function habits(): BelongsTo
+    public function habit(): BelongsTo
     {
         return $this->belongsTo(Habit::class);
     }
